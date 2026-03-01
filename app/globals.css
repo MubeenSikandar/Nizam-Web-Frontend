@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* ── Light Theme ────────────────────────────── */
+    --background: #fff0df;
+    --background-subtle: #ffe8cc;
+    --surface: #ffffff;
+    --surface-raised: #fdf6ee;
+    --border: #e8d5bc;
+    --border-subtle: #f0e2cc;
+
+    --foreground: #1a1208;
+    --foreground-muted: #6b5c45;
+    --foreground-subtle: #9c8870;
+
+    --primary: #d4873a;
+    --primary-hover: #bf7530;
+    --primary-foreground: #ffffff;
+
+    --accent: #c47a2e;
+    --destructive: #c0392b;
+    --success: #27ae60;
+    --warning: #e67e22;
+}
+
+.dark {
+    /* ── Dark Theme — Deep Navy + Blue Gradients ─ */
+    --background: #070d1a;
+    --background-subtle: #0c1525;
+    --surface: #0f1c33;
+    --surface-raised: #152340;
+
+    --border: #1e3052;
+    --border-subtle: #162540;
+
+    --foreground: #e8f0fe;
+    --foreground-muted: #8faac8;
+    --foreground-subtle: #5a7a9e;
+
+    --primary: #4d8ef0;
+    --primary-hover: #6ba3f5;
+    --primary-foreground: #ffffff;
+
+    --accent: #2d6fd4;
+    --destructive: #e05252;
+    --success: #34c77b;
+    --warning: #f0a444;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    --color-background: var(--background);
+    --color-background-subtle: var(--background-subtle);
+    --color-surface: var(--surface);
+    --color-surface-raised: var(--surface-raised);
+    --color-border: var(--border);
+    --color-border-subtle: var(--border-subtle);
+    --color-foreground: var(--foreground);
+    --color-foreground-muted: var(--foreground-muted);
+    --color-foreground-subtle: var(--foreground-subtle);
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-accent: var(--accent);
+    --color-destructive: var(--destructive);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --font-display: var(--font-display);
+    --font-body: var(--font-body);
+    --font-urdu: var(--font-urdu);
+    --font-mono: ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 15px;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+/* ── Dark mode gradient accents ─────────────────── */
+.dark .gradient-glow {
+    background: linear-gradient(135deg, #0f1c33 0%, #0d2548 50%, #091d3e 100%);
+}
+
+.dark .gradient-hero {
+    background: linear-gradient(160deg, #070d1a 0%, #0f2040 40%, #0a1830 100%);
+}
+
+.dark .gradient-card {
+    background: linear-gradient(145deg, #0f1c33, #152340);
+    border: 1px solid #1e3052;
+}
+
+.dark .gradient-sidebar {
+    background: linear-gradient(180deg, #0c1525 0%, #091020 100%);
+}
+
+/* ── Scrollbar styling ───────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--background-subtle);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground-subtle);
+}
+
+/* ── Glassmorphism ───────────────────────────────── */
+
+/* Base glass */
+.glass {
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 60px;
+}
+
+/* Subtle — lighter blur */
+.glass-subtle {
+    backdrop-filter: blur(8px) saturate(1.2);
+    -webkit-backdrop-filter: blur(8px) saturate(1.2);
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+/* Strong — frosted */
+.glass-strong {
+    backdrop-filter: blur(24px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+}
+
+/* Card — with warm amber shadow */
+.glass-card {
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    background: rgba(255, 248, 240, 0.6);
+    border: 1px solid rgba(232, 213, 188, 0.5);
+    border-radius: 12px;
+    box-shadow:
+        0 4px 24px rgba(212, 135, 58, 0.08),
+        0 1px 4px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Navbar / topbar */
+.glass-nav {
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    background: rgba(255, 248, 240, 0.75);
+    border-bottom: 1px solid rgba(232, 213, 188, 0.4);
+}
+
+/* ── Dark mode overrides ─────────────────────────── */
+.dark .glass {
+    background: rgba(15, 28, 51, 0.6);
+    border: 1px solid rgba(77, 142, 240, 0.15);
+}
+
+.dark .glass-subtle {
+    background: rgba(15, 28, 51, 0.4);
+    border: 1px solid rgba(77, 142, 240, 0.1);
+}
+
+.dark .glass-strong {
+    background: rgba(15, 28, 51, 0.75);
+    border: 1px solid rgba(77, 142, 240, 0.25);
+}
+
+.dark .glass-card {
+    background: rgba(15, 28, 51, 0.55);
+    border: 1px solid rgba(30, 48, 82, 0.8);
+    box-shadow:
+        0 4px 24px rgba(77, 142, 240, 0.08),
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(77, 142, 240, 0.1);
+}
+
+.dark .glass-nav {
+    background: rgba(7, 13, 26, 0.8);
+    border-bottom: 1px solid rgba(30, 48, 82, 0.6);
 }
