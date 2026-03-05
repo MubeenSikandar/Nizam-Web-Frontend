@@ -7,57 +7,57 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   loading?: boolean;
-  icon?: ReactNode; // left icon
-  iconRight?: ReactNode; // right icon
+  icon?: ReactNode;
+  iconRight?: ReactNode;
   children: ReactNode;
 }
 
-const base = `
-  inline-flex items-center justify-center gap-2
-  font-[family-name:var(--font-body)] font-medium
-  rounded-lg border transition-all duration-200
-  cursor-pointer select-none outline-none
-  focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2
-  disabled:opacity-50 disabled:pointer-events-none
-  active:scale-[0.97]
-`.trim();
+const base = [
+  "inline-flex items-center justify-center gap-2",
+  "font-[family-name:var(--font-body)] font-medium",
+  "rounded-lg border transition-all duration-200",
+  "cursor-pointer select-none outline-none",
+  "focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
+  "disabled:opacity-50 disabled:pointer-events-none",
+  "active:scale-[0.97]",
+].join(" ");
 
 const variants: Record<Variant, string> = {
-  primary: `
-    bg-[var(--primary)] text-[var(--primary-foreground)]
-    border-[var(--primary)]
-    hover:bg-[var(--primary-hover)] hover:border-[var(--primary-hover)]
-    shadow-sm hover:shadow-md hover:shadow-[color-mix(in_srgb,var(--primary)_25%,transparent)]
-  `,
-  secondary: `
-    bg-[var(--surface-raised)] text-[var(--foreground)]
-    border-[var(--border)]
-    hover:bg-[var(--surface)] hover:border-[var(--primary)]
-    hover:text-[var(--primary)]
-  `,
-  ghost: `
-    bg-transparent text-[var(--foreground-muted)]
-    border-transparent
-    hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]
-    hover:text-[var(--primary)]
-  `,
-  outline: `
-    bg-transparent text-[var(--primary)]
-    border-[var(--primary)]
-    hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]
-  `,
-  destructive: `
-    bg-[var(--destructive)] text-white
-    border-[var(--destructive)]
-    hover:opacity-90
-    shadow-sm
-  `,
+  primary: [
+    "bg-[var(--primary)] text-[var(--primary-foreground)]",
+    "border-[var(--primary)]",
+    "hover:bg-[var(--primary-hover)] hover:border-[var(--primary-hover)]",
+    "shadow-sm hover:shadow-md hover:shadow-[color-mix(in_srgb,var(--primary)_25%,transparent)]",
+  ].join(" "),
+  secondary: [
+    "bg-[var(--surface-raised)] text-[var(--foreground)]",
+    "border-[var(--border)]",
+    "hover:bg-[var(--surface)] hover:border-[var(--primary)]",
+    "hover:text-[var(--primary)]",
+  ].join(" "),
+  ghost: [
+    "bg-transparent text-[var(--foreground-muted)]",
+    "border-transparent",
+    "hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]",
+    "hover:text-[var(--primary)]",
+  ].join(" "),
+  outline: [
+    "bg-transparent text-[var(--primary)]",
+    "border-[var(--primary)]",
+    "hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]",
+  ].join(" "),
+  destructive: [
+    "bg-[var(--destructive)] text-white",
+    "border-[var(--destructive)]",
+    "hover:opacity-90",
+    "shadow-sm",
+  ].join(" "),
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-8  px-3   text-xs  gap-1.5",
-  md: "h-10 px-4   text-sm  gap-2",
-  lg: "h-12 px-6   text-base gap-2.5",
+  sm: "h-8  px-3 text-xs  gap-1.5",
+  md: "h-10 px-4 text-sm  gap-2",
+  lg: "h-12 px-6 text-base gap-2.5",
 };
 
 const Spinner = () => (

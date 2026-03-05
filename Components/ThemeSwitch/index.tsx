@@ -5,10 +5,9 @@ import { useTheme } from "next-themes";
 export default function ThemeSwitch() {
   const { resolvedTheme, setTheme } = useTheme();
 
-  // resolvedTheme is undefined on the server — use it as the mount guard
-  const isDark = resolvedTheme === "dark";
-
   if (!resolvedTheme) return <div style={{ width: 36, height: 36 }} />;
+
+  const isDark = resolvedTheme === "dark";
 
   return (
     <button
@@ -29,14 +28,14 @@ export default function ThemeSwitch() {
         outline: "none",
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.1)";
-        (e.currentTarget as HTMLButtonElement).style.boxShadow = isDark
+        e.currentTarget.style.transform = "scale(1.1)";
+        e.currentTarget.style.boxShadow = isDark
           ? "0 0 16px rgba(77,142,240,0.25)"
           : "0 0 16px rgba(212,135,58,0.2)";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-        (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.boxShadow = "none";
       }}
     >
       {/* Sun */}

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { LanguageProvider } from "@/Context/LanguageContext";
 
 // Headings — elegant, high-contrast serif
 const cormorant = Cormorant_Garamond({
@@ -42,7 +41,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${jost.variable} ${nastaliq.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <LanguageProvider>{children}</LanguageProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

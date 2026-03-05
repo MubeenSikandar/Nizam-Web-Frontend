@@ -23,6 +23,7 @@ interface TypographyProps {
   className?: string;
   muted?: boolean;
   urdu?: boolean; // switches to Urdu-appropriate font + RTL
+  onClick?: () => void;
 }
 
 const variantStyles: Record<Variant, string> = {
@@ -82,6 +83,7 @@ const Typography = ({
   className = "",
   muted = false,
   urdu = false,
+  onClick,
 }: TypographyProps) => {
   const Tag = (as ?? defaultTag[variant]) as Tag;
 
@@ -93,11 +95,23 @@ const Typography = ({
     ? "font-[family-name:var(--font-urdu)] text-right leading-loose"
     : "";
 
-  const combined = [variantStyles[variant], colorClass, urduClass, className]
+  const clickClass = onClick ? "cursor-pointer" : "";
+
+  const combined = [
+    variantStyles[variant],
+    colorClass,
+    urduClass,
+    className,
+    clickClass,
+  ]
     .filter(Boolean)
     .join(" ");
 
-  return <Tag className={combined}>{children}</Tag>;
+  return (
+    <Tag className={combined} onClick={onClick}>
+      {children}
+    </Tag>
+  );
 };
 
 export default Typography;
