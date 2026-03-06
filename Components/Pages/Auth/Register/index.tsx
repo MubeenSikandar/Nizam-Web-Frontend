@@ -1,17 +1,17 @@
 "use client";
 import { useState } from "react";
-import Header from "@/components/Pages/Components/Header";
+import Header from "@/components/Pages/RegisterComponents/Header";
 import Typography from "@/components/UI/Typography";
 
 // Content (left side)
-import OrganizationContent from "@/components/Pages/Components/RegisterContent/OrganizationContent";
-import AdminContent from "@/components/Pages/Components/RegisterContent/AdminContent";
-import ReviewContent from "@/components/Pages/Components/RegisterContent/ReviewContent";
+import OrganizationContent from "@/components/Pages/RegisterComponents/RegisterContent/OrganizationContent";
+import AdminContent from "@/components/Pages/RegisterComponents/RegisterContent/AdminContent";
+import ReviewContent from "@/components/Pages/RegisterComponents/RegisterContent/ReviewContent";
 
 // Cards (right side)
-import OrganizationRegisterCard from "@/components/Pages/Components/RegisterCard/OrganizationRegisterCard";
-import AdminAccountRegisterCard from "@/components/Pages/Components/RegisterCard/AdminAccountRegisterCard";
-import ReviewRegisterCard from "@/components/Pages/Components/RegisterCard/ReviewCard/ReviewRegisterCard";
+import OrganizationRegisterCard from "@/components/Pages/RegisterComponents/RegisterCard/OrganizationRegisterCard";
+import AdminAccountRegisterCard from "@/components/Pages/RegisterComponents/RegisterCard/AdminAccountRegisterCard";
+import ReviewRegisterCard from "@/components/Pages/RegisterComponents/RegisterCard/ReviewCard/ReviewRegisterCard";
 
 export type RegisterData = {
   // Step 1
@@ -49,8 +49,11 @@ const Register = () => {
     password: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
   const next = (partial: Partial<RegisterData>) => {
     setData((prev) => ({ ...prev, ...partial }));
+    setFieldErrors({}); // clear errors on advance
     setStep((s) => s + 1);
   };
 

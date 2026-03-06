@@ -12,6 +12,7 @@ import { RegisterData } from "@/components/Pages/Auth/Register";
 interface Props {
   data: RegisterData;
   onNext: (partial: Partial<RegisterData>) => void;
+  errors?: Record<string, string>;
 }
 
 const INDUSTRIES = [
@@ -35,7 +36,7 @@ const generateSlug = (name: string) =>
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-");
 
-const OrganizationRegisterCard = ({ data, onNext }: Props) => {
+const OrganizationRegisterCard = ({ data, onNext, errors }: Props) => {
   const router = useRouter();
   const [companyName, setCompanyName] = useState(data.companyName);
   const [slug, setSlug] = useState(data.slug);
@@ -43,18 +44,39 @@ const OrganizationRegisterCard = ({ data, onNext }: Props) => {
   const [industry, setIndustry] = useState(data.industry);
   const [companySize, setCompanySize] = useState(data.companySize);
   const [city, setCity] = useState(data.city);
+  const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+
+  const allErrors = { ...errors, ...localErrors };
 
   const handleCompanyNameChange = (value: string) => {
     setCompanyName(value);
     if (!slugEdited) setSlug(generateSlug(value));
+    if (localErrors.companyName)
+      setLocalErrors((e) => ({ ...e, companyName: "" }));
   };
 
   const handleSlugChange = (value: string) => {
     setSlugEdited(true);
     setSlug(generateSlug(value));
+    if (localErrors.slug) setLocalErrors((e) => ({ ...e, slug: "" }));
   };
 
   const handleContinue = () => {
+    const errs: Record<string, string> = {};
+
+    if (!companyName.trim()) errs.companyName = "Company name is required.";
+    if (!slug.trim()) errs.slug = "Workspace URL is required.";
+    else if (!/^[a-z0-9-]+$/.test(slug))
+      errs.slug = "Only lowercase letters, numbers, and hyphens.";
+    if (!industry) errs.industry = "Please select an industry.";
+    if (!companySize) errs.companySize = "Please select a company size.";
+    if (!city) errs.city = "Please select a headquarters city.";
+
+    if (Object.keys(errs).length > 0) {
+      setLocalErrors(errs);
+      return;
+    }
+
     onNext({ companyName, slug, industry, companySize, city });
   };
 
@@ -65,13 +87,20 @@ const OrganizationRegisterCard = ({ data, onNext }: Props) => {
         Set up your corporate workspace on Nizam.
       </Typography>
 
-      <Input
-        label="Company Name"
-        variant="text"
-        placeholder="e.g. Indus Textiles Ltd."
-        value={companyName}
-        onChange={(e) => handleCompanyNameChange(e.target.value)}
-      />
+      <div className="flex flex-col gap-1 w-full">
+        <Input
+          label="Company Name"
+          variant="text"
+          placeholder="e.g. Indus Textiles Ltd."
+          value={companyName}
+          onChange={(e) => handleCompanyNameChange(e.target.value)}
+        />
+        {allErrors.companyName && (
+          <Typography variant="caption" className="text-red-500 pl-1">
+            {allErrors.companyName}
+          </Typography>
+        )}
+      </div>
 
       <div className="flex flex-col gap-1 w-full">
         <Input
@@ -86,31 +115,66 @@ const OrganizationRegisterCard = ({ data, onNext }: Props) => {
             {slug}.nizam.pk
           </Typography>
         )}
+        {allErrors.slug && (
+          <Typography variant="caption" className="text-red-500 pl-1">
+            {allErrors.slug}
+          </Typography>
+        )}
       </div>
 
-      <Dropdown
-        label="Industry"
-        placeholder="Select Industry"
-        options={INDUSTRIES}
-        value={industry}
-        onChange={setIndustry}
-      />
+      <div className="flex flex-col gap-1 w-full">
+        <Dropdown
+          label="Industry"
+          placeholder="Select Industry"
+          options={INDUSTRIES}
+          value={industry}
+          onChange={(v) => {
+            setIndustry(v);
+            setLocalErrors((e) => ({ ...e, industry: "" }));
+          }}
+        />
+        {allErrors.industry && (
+          <Typography variant="caption" className="text-red-500 pl-1">
+            {allErrors.industry}
+          </Typography>
+        )}
+      </div>
 
-      <Dropdown
-        label="Company Size"
-        placeholder="Select Size"
-        options={COMPANY_SIZES.map((s) => `${s} employees`)}
-        value={companySize}
-        onChange={setCompanySize}
-      />
+      <div className="flex flex-col gap-1 w-full">
+        <Dropdown
+          label="Company Size"
+          placeholder="Select Size"
+          options={COMPANY_SIZES.map((s) => `${s} employees`)}
+          value={companySize}
+          onChange={(v) => {
+            setCompanySize(v);
+            setLocalErrors((e) => ({ ...e, companySize: "" }));
+          }}
+        />
+        {allErrors.companySize && (
+          <Typography variant="caption" className="text-red-500 pl-1">
+            {allErrors.companySize}
+          </Typography>
+        )}
+      </div>
 
-      <Dropdown
-        label="Headquarters"
-        placeholder="Select City"
-        options={CITIES}
-        value={city}
-        onChange={setCity}
-      />
+      <div className="flex flex-col gap-1 w-full">
+        <Dropdown
+          label="Headquarters"
+          placeholder="Select City"
+          options={CITIES}
+          value={city}
+          onChange={(v) => {
+            setCity(v);
+            setLocalErrors((e) => ({ ...e, city: "" }));
+          }}
+        />
+        {allErrors.city && (
+          <Typography variant="caption" className="text-red-500 pl-1">
+            {allErrors.city}
+          </Typography>
+        )}
+      </div>
 
       <div className="flex items-center justify-center w-full pt-2">
         <Button

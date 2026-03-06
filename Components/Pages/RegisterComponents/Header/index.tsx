@@ -4,15 +4,6 @@ import NizamLogo from "@/components/Logo";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import Typography from "@/components/UI/Typography";
 
-const NavLink = ({ label }: { label: string }) => (
-  <Typography
-    variant="h4"
-    className="cursor-pointer transition-colors duration-200 hover:text-[var(--primary)] hover:opacity-80"
-  >
-    {label}
-  </Typography>
-);
-
 const Header = () => {
   return (
     <div className="flex items-center justify-between p-4 rounded-full w-full glass">
@@ -25,25 +16,25 @@ const Header = () => {
           </Typography>
         </div>
       </div>
-      <div className="flex items-center justify-center w-[30%] gap-4">
+      <div className="flex items-center justify-center w-[25%] gap-4">
         <div className="flex items-center justify-between w-full gap-3">
           <Typography
             variant="body"
             className="hover:text-primary cursor-pointer transform-3d duration-100 text-lg"
           >
-            <li>Solution</li>
+            Solution
           </Typography>
           <Typography
             variant="body"
             className="hover:text-primary cursor-pointer transform-3d duration-100 text-lg"
           >
-            <li>Support</li>
+            Support
           </Typography>
           <Typography
             variant="body"
             className="hover:text-primary cursor-pointer transform-3d duration-100 text-lg"
           >
-            <li>Security</li>
+            Security
           </Typography>
         </div>
         <div className="flex items-center cursor-pointer justify-center gap-3">

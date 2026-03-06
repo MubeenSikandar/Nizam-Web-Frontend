@@ -10,6 +10,7 @@ import Integrity_Light from "@/Assets/Integrity_Light.svg";
 const ReviewContent = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
   return (
     <div className="flex items-start justify-start flex-col w-full gap-5 h-full">
       <div className="glass flex items-center justify-center p-2">

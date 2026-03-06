@@ -1,9 +1,9 @@
 "use client";
 import Button from "@/components/UI/Button";
 import Typography from "@/components/UI/Typography";
-import ArrowRight from "@/Assets/Arrow_Right.svg";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { useRegister, mapBackendError } from "@/hooks/useAuth";
+import type { ApiError } from "@/types/auth";
 import { RegisterData } from "@/components/Pages/Auth/Register";
 
 interface Props {
@@ -11,12 +11,7 @@ interface Props {
   onBack: () => void;
 }
 
-interface RowProps {
-  label: string;
-  value: string;
-}
-
-const Row = ({ label, value }: RowProps) => (
+const Row = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-start justify-between w-full gap-4">
     <Typography variant="caption" className="text-sm! shrink-0">
       {label}
@@ -28,12 +23,32 @@ const Row = ({ label, value }: RowProps) => (
 );
 
 const ReviewRegisterCard = ({ data, onBack }: Props) => {
-  const router = useRouter();
+  const { mutate: register, isPending, error } = useRegister();
 
-  const handleFinalize = async () => {
-    // POST to /api/auth/register here
-    router.push("/login");
+  const handleFinalize = () => {
+    register({
+      org_name: data.companyName,
+      org_slug: data.slug,
+      name_en: data.fullName,
+      email: data.email,
+      password: data.password,
+      phone: data.phone || undefined,
+    });
   };
+
+  const backendError = error
+    ? mapBackendError(
+        (error as AxiosError<ApiError>)?.response?.data?.error?.code ?? "",
+        (error as AxiosError<ApiError>)?.response?.data?.error?.message ?? "",
+      )
+    : null;
+
+  const slugError = backendError?.includes("workspace URL")
+    ? backendError
+    : null;
+  const emailError = backendError?.includes("email") ? backendError : null;
+  const generalError =
+    !slugError && !emailError && backendError ? backendError : null;
 
   return (
     <div className="flex flex-col items-start justify-center p-10 gap-4 glass w-full">
@@ -60,10 +75,15 @@ const ReviewRegisterCard = ({ data, onBack }: Props) => {
           <Row label="Company Name" value={data.companyName} />
           <div className="w-full h-px bg-border" />
           <Row label="Workspace URL" value={`${data.slug}.nizam.pk`} />
+          {slugError && (
+            <Typography variant="caption" className="text-red-500">
+              {slugError}
+            </Typography>
+          )}
           <div className="w-full h-px bg-border" />
           <Row label="Industry" value={data.industry} />
           <div className="w-full h-px bg-border" />
-          <Row label="Company Size" value={`${data.companySize} employees`} />
+          <Row label="Company Size" value={data.companySize} />
           <div className="w-full h-px bg-border" />
           <Row label="Headquarters" value={data.city} />
         </div>
@@ -89,6 +109,11 @@ const ReviewRegisterCard = ({ data, onBack }: Props) => {
           <Row label="Designation" value={data.designation} />
           <div className="w-full h-px bg-border" />
           <Row label="Work Email" value={data.email} />
+          {emailError && (
+            <Typography variant="caption" className="text-red-500">
+              {emailError}
+            </Typography>
+          )}
           <div className="w-full h-px bg-border" />
           <Row label="Phone" value={data.phone} />
           <div className="w-full h-px bg-border" />
@@ -96,13 +121,21 @@ const ReviewRegisterCard = ({ data, onBack }: Props) => {
         </div>
       </div>
 
-      {/* Buttons */}
+      {generalError && (
+        <div className="w-full px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/10">
+          <Typography variant="caption" className="text-red-500">
+            {generalError}
+          </Typography>
+        </div>
+      )}
+
       <div className="flex items-center justify-center gap-3 w-full pt-2">
         <Button
           variant="secondary"
           size="lg"
           className="w-full!"
           onClick={onBack}
+          disabled={isPending}
         >
           Back
         </Button>
@@ -111,9 +144,9 @@ const ReviewRegisterCard = ({ data, onBack }: Props) => {
           size="lg"
           className="w-full!"
           onClick={handleFinalize}
-          iconRight={<Image src={ArrowRight} width={14} height={14} alt="" />}
+          disabled={isPending}
         >
-          Finalize Setup
+          {isPending ? "Setting up..." : "Finalize Setup"}
         </Button>
       </div>
 

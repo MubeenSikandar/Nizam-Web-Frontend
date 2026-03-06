@@ -80,10 +80,7 @@ const LockIcon = () => (
 );
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    { variant, label, error, hint, className = "", disabled, ...props },
-    ref,
-  ) => {
+  ({ variant, label, error, hint, disabled, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     const id = useId();
 

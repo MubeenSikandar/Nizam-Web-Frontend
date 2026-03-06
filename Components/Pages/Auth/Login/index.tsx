@@ -1,6 +1,6 @@
-import Header from "@/components/Pages/Components/Header";
-import LoginContent from "@/components/Pages/Components/LoginContent";
-import LoginCard from "@/components/Pages/Components/LoginCard";
+import Header from "@/components/Pages/RegisterComponents/Header";
+import LoginContent from "@/components/Pages/LoginComponents/LoginContent";
+import LoginCard from "@/components/Pages/LoginComponents/LoginCard";
 
 const Login = () => {
   return (
